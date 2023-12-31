@@ -124,6 +124,18 @@ test("updating a specific blog", async () => {
   expect(blogsAtEnd[0]).toEqual(response.body);
 });
 
+test("fails with the status code 400 if id is invalid", async () => {
+  const invalidId = "dasd123)rdaf_";
+
+  await api.get(`/api/blogs/${invalidId}`).expect(400);
+});
+
+test("fail with status code 404 if blog doesnt exist", async () => {
+  const nonExistingId = await helper.nonExistingId();
+
+  await api.get(`/api/blogs/${nonExistingId}`).expect(404);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
