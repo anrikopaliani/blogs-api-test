@@ -103,6 +103,27 @@ test("return a specific blog by id", async () => {
   expect(response.body).toEqual(blogToSee);
 });
 
+test("updating a specific blog", async () => {
+  const blogsAtStart = await helper.blogsInDb();
+  const newBlog = {
+    title: "updated Title",
+    author: "updated Author",
+    likes: 5,
+    url: "updated Url",
+  };
+  const blogToUpdate = blogsAtStart[0];
+
+  const response = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(newBlog)
+    .expect(200)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await helper.blogsInDb();
+  expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+  expect(blogsAtEnd[0]).toEqual(response.body);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
