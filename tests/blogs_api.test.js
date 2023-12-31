@@ -8,10 +8,11 @@ const api = supertest(app);
 beforeEach(async () => {
   await Blog.deleteMany({});
 
-  const blogsArray = helper.initialBlogs.map((blog) => new Blog(blog));
-  const promiseArray = blogsArray.map((blog) => blog.save());
+  // const blogsArray = helper.initialBlogs.map((blog) => new Blog(blog));
+  // const promiseArray = blogsArray.map((blog) => blog.save());
 
-  await Promise.all(promiseArray);
+  // await Promise.all(promiseArray);
+  await Blog.insertMany(helper.initialBlogs);
 });
 
 test("return corrent amount of blog posts", async () => {
