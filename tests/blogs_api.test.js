@@ -94,6 +94,15 @@ test("delete a blog", async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
 });
 
+test("return a specific blog by id", async () => {
+  const blogsAtStart = await helper.blogsInDb();
+  const blogToSee = blogsAtStart[0];
+
+  const response = await api.get(`/api/blogs/${blogToSee.id}`).expect(200);
+
+  expect(response.body).toEqual(blogToSee);
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
